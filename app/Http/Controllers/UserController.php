@@ -28,7 +28,7 @@ class UserController extends Controller
 		$user = $this->findUser($username, $email);
 		
 		if($user instanceof User){
-			return response()->json(['errorCode' => 'USER_EXISTED', 'errorMessage' => 'This user has already existed!']);
+			return response()->json(['errorCode' => 'USER_EXISTED', 'errorMessage' => 'This user has already existed.']);
 		}else{
 			$userAttrs = $request->all();
 			// Update token to login after created
@@ -50,10 +50,10 @@ class UserController extends Controller
 				$user->save();
 				return response()->json(['user' => $user]);
 			}else {
-				return response()->json(['errorCode' => 'INVALID_USER', 'errorMessage' => 'Username or password is incorrect!']);
+				return response()->json(['errorCode' => 'INVALID_USER', 'errorMessage' => 'Username or password is incorrect.']);
 			}
 		}else{
-			return response()->json(['errorCode' => 'INVALID_USER', 'errorMessage' => 'Username or password is incorrect!']);
+			return response()->json(['errorCode' => 'INVALID_USER', 'errorMessage' => 'Username or password is incorrect.']);
 		}
 	}
 	

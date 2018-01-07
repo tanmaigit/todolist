@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
 		]);
 		DB::table('todo')->insert([
 			'name' => 'first task',
-			'description' => 'reseacher the laravel/lumen and microservice, setup on local',
+			'description' => 'reseach the laravel/lumen and microservice, setup on local',
 			'status' => 3,
 			'priority' => 3,
 			'user_id' => $userId,

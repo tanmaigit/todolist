@@ -16,12 +16,52 @@ todoApp.controller('UserController', ['$rootScope', '$scope', '$state', '$http',
 		$scope.passwordError = "";
 		$scope.confirmPasswordError = "";
 		
+		var loggedIn = function (loggedUser) {
+			$localStorage.loggedUser = loggedUser;
+			$rootScope.$broadcast("login");
+			var redirectTo = Constants.states.myToDo;
+			if($localStorage.redirectAfterLogging){
+				redirectTo = $localStorage.redirectAfterLogging;
+				$localStorage.redirectAfterLogging = null;
+			}
+			$state.go(redirectTo);
+		};
+		
 		$scope.goToCreate = function() {
 			$state.go(Constants.states.createUser);
 		};
 		
 		$scope.goToLogin = function() {
 			$state.go(Constants.states.login);
+		};
+		
+		$scope.login = function() {
+			$scope.errorMessage = "";
+			$scope.usernameError = "";
+			$scope.passwordError = "";
+			// Validate
+			if($scope.model.username === ''){
+				$scope.usernameError = "Username cannot be blank.";
+				return false;
+			}
+			if($scope.model.password === ''){
+				$scope.passwordError = "Password cannot be blank.";
+				return false;
+			}
+			// Create user on server
+			UserService.login($scope.model).then(
+				function(response){
+					console.log(response.data);
+					if(response.data.errorCode){
+						$scope.errorMessage = response.data.errorMessage;
+					}else{
+						loggedIn(response.data.user);
+					}
+				}, 
+				function(failedReponse){
+					console.log(failedReponse);
+				}
+			);
 		};
 		
 		$scope.create = function() {
@@ -67,50 +107,6 @@ todoApp.controller('UserController', ['$rootScope', '$scope', '$state', '$http',
 				}
 			);
 		};
-		
-		var loggedIn = function (loggedUser) {
-			$localStorage.loggedUser = loggedUser;
-			$rootScope.$broadcast("login");
-			var redirectTo = Constants.states.myToDo;
-			if($localStorage.redirectAfterLogging){
-				redirectTo = $localStorage.redirectAfterLogging;
-				$localStorage.redirectAfterLogging = null;
-			}
-			$state.go(redirectTo);
-		};
-		
-		$scope.login = function() {
-			$scope.errorMessage = "";
-			$scope.usernameError = "";
-			$scope.passwordError = "";
-			// Validate
-			if($scope.model.username === ''){
-				$scope.usernameError = "Username cannot be blank.";
-				return false;
-			}
-			if($scope.model.password === ''){
-				$scope.passwordError = "Password cannot be blank.";
-				return false;
-			}
-			// Create user on server
-			UserService.login($scope.model).then(
-				function(response){
-					console.log(response.data);
-					if(response.data.errorCode){
-						$scope.errorMessage = response.data.errorMessage;
-					}else{
-						loggedIn(response.data.user);
-					}
-				}, 
-				function(failedReponse){
-					console.log(failedReponse);
-				}
-			);
-		};
-		
-		$scope.logout = function() {
-			$localStorage.loggedUser = null;
-		}
     }
 ]
 );

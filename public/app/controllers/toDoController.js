@@ -29,102 +29,6 @@ todoApp.controller('ToDoController', ['$scope', '$state', '$localStorage', 'ToDo
 			);
 		};
 		
-		$scope.getSortClass = function (sort){
-			if(sort === 1)
-				return 'glyphicon glyphicon-sort-by-attributes';
-			else if(sort === 2)
-				return 'glyphicon glyphicon-sort-by-attributes-alt';
-			return 'glyphicon glyphicon-sort';
-		};
-		
-		
-		$scope.fnSort = function (field){
-			if(typeof $scope.sort[field] != 'undefined'){
-				// Reset sort
-				var oldValue = $scope.sort[field];
-				$scope.sort = {
-					name: 0,
-					description: 0,
-					priority: 0,
-					status: 0,
-					created_at: 0
-				};
-				$scope.sortParam = field + ',' + (oldValue === 1 ? 'DESC' : 'ASC');
-				console.log($scope.sortParam);
-				getToDoList();
-				// Just update on UI
-				$scope.sort[field] = oldValue === 1 ? 2 : 1;
-			}
-		};
-		
-		$scope.setStatus = function (todo, newStatus){
-			ToDoService.setStatus({id: todo.id, status: newStatus}).then(
-				function(response){
-					// Update to UI
-					todo.status = newStatus;
-				}
-			);
-		};
-		
-		$scope.getStatus = function (status){
-			if(Constants.statuses[status])
-				return Constants.statuses[status];
-			return '- Select -';
-		};
-		
-		$scope.getStatusClass = function (status){
-			if(status === 1)
-				return 'btn-primary';
-			else if(status === 2)
-				return 'btn-warning';
-			else if(status === 3)
-				return 'btn-success';
-			return 'btn-primary';
-		};
-		
-		$scope.getPriority = function (priority){
-			if(Constants.priorities[priority])
-				return Constants.priorities[priority];
-			return '- Select -';
-		};
-		
-		$scope.getPriorityClass = function (priority){
-			if(priority === 3)
-				return 'btn-danger';
-			else if(priority === 2)
-				return 'btn-warning';
-			else if(priority === 1)
-				return 'btn-info';
-			return 'btn-primary';
-		};
-		
-		$scope.setPriority = function (todo, newPriority){
-			ToDoService.setPriority({id: todo.id, priority: newPriority}).then(
-				function(response){
-					// Update to UI
-					todo.priority = newPriority;
-				}
-			);
-		};
-		
-		$scope.goToCreate = function (){
-			$state.go(Constants.states.createToDo);
-		};
-		
-		$scope.goToList = function (){
-			$state.go(Constants.states.myToDo);
-		};
-		
-		$scope.goToEdit = function (id){
-			$state.go(Constants.states.editToDo, {id: id});
-		};
-		
-		$scope.fnSearch = function (field, value){
-			if(typeof field != 'undefined' && typeof $scope.search[field] != 'undefined')
-				$scope.search[field] = value;
-			getToDoList();
-		};
-		
 		$scope.update = function (){
 			$scope.errorMessage = "";
 			$scope.nameError = "";
@@ -159,10 +63,105 @@ todoApp.controller('ToDoController', ['$scope', '$state', '$localStorage', 'ToDo
 			}
 		};
 		
+		$scope.fnSearch = function (field, value){
+			if(typeof field != 'undefined' && typeof $scope.search[field] != 'undefined')
+				$scope.search[field] = value;
+			getToDoList();
+		};
+		
+		$scope.fnSort = function (field){
+			if(typeof $scope.sort[field] != 'undefined'){
+				// Reset sort
+				var oldValue = $scope.sort[field];
+				$scope.sort = {
+					name: 0,
+					description: 0,
+					priority: 0,
+					status: 0,
+					created_at: 0
+				};
+				$scope.sortParam = field + ',' + (oldValue === 1 ? 'DESC' : 'ASC');
+				console.log($scope.sortParam);
+				getToDoList();
+				// Just update on UI
+				$scope.sort[field] = oldValue === 1 ? 2 : 1;
+			}
+		};
+		
+		$scope.getSortClass = function (sort){
+			if(sort === 1)
+				return 'glyphicon glyphicon-sort-by-attributes';
+			else if(sort === 2)
+				return 'glyphicon glyphicon-sort-by-attributes-alt';
+			return 'glyphicon glyphicon-sort';
+		};
+		
+		$scope.getPriorityClass = function (priority){
+			if(priority === 3)
+				return 'btn-danger';
+			else if(priority === 2)
+				return 'btn-warning';
+			else if(priority === 1)
+				return 'btn-info';
+			return 'btn-primary';
+		};
+		
+		$scope.getStatusClass = function (status){
+			if(status === 1)
+				return 'btn-primary';
+			else if(status === 2)
+				return 'btn-warning';
+			else if(status === 3)
+				return 'btn-success';
+			return 'btn-primary';
+		};
+		
+		$scope.getPriority = function (priority){
+			if(Constants.priorities[priority])
+				return Constants.priorities[priority];
+			return '- Select -';
+		};
+		
+		$scope.setPriority = function (todo, newPriority){
+			ToDoService.setPriority({id: todo.id, priority: newPriority}).then(
+				function(response){
+					// Update to UI
+					todo.priority = newPriority;
+				}
+			);
+		};
+		
+		$scope.getStatus = function (status){
+			if(Constants.statuses[status])
+				return Constants.statuses[status];
+			return '- Select -';
+		};
+		
+		$scope.setStatus = function (todo, newStatus){
+			ToDoService.setStatus({id: todo.id, status: newStatus}).then(
+				function(response){
+					// Update to UI
+					todo.status = newStatus;
+				}
+			);
+		};		
+		
+		$scope.goToCreate = function (){
+			$state.go(Constants.states.createToDo);
+		};
+		
+		$scope.goToList = function (){
+			$state.go(Constants.states.myToDo);
+		};
+		
+		$scope.goToEdit = function (id){
+			$state.go(Constants.states.editToDo, {id: id});
+		};
+		
 		// List
 		if($state.current.name === Constants.states.myToDo) {
 			$scope.search = {'name': '', 'description': '', 'priority': 0, 'status': 0};
-			$scope.sortParam = 'created_at,DESC';
+			$scope.sortParam = 'created_at,DESC'; // default sort
 			$scope.sort = {
 				name: 0,
 				description: 0,
@@ -193,7 +192,7 @@ todoApp.controller('ToDoController', ['$scope', '$state', '$localStorage', 'ToDo
 				'id': null,
 				'name': '',
 				'description': '',
-				'status': null,
+				'status': null, // if creating new, status should be not set
 				'priority': 2, // medium
 				'user_id': $localStorage.loggedUser.id
 			};

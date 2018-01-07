@@ -1,5 +1,5 @@
 <div class="col-md-6 col-md-offset-3">
-    <h2>Create New Task</h2>
+    <h2>{{model.id ? ('Update Task: ' + model.name) : 'Create New Task'}}</h2>
     <form name="form">
         <div class="form-group">
             <label for="name">Name</label>

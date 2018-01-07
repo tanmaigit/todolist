@@ -16,7 +16,8 @@ class ToDoController extends Controller{
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        // When performing on todo, must check the api_token as authenticated user
+		$this->middleware('auth');
     }
 	
 	public function get(Request $request, $id)

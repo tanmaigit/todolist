@@ -18,7 +18,7 @@ class CreateTodoTable extends Migration
 			$table->string('name');
 			$table->string('description');
 			$table->integer('status')->unsigned();
-			$table->integer('priotity')->unsigned();
+			$table->integer('priority')->unsigned();
 			$table->integer('user_id')->unsigned();
 			$table->timestamps();
 			$table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');

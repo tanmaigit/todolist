@@ -1,0 +1,59 @@
+<div class="col-md-6 col-md-offset-3">
+    <h2>Create New Task</h2>
+    <form name="form">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" name="name" class="form-control" 
+			ng-class="{ 'has-error': nameError !== '' }"
+			ng-model="model.name">
+			<div ng-if="nameError !== ''" class="has-error">{{nameError}}</div>
+        </div>
+		<div class="form-group">
+            <label for="name">Description</label>
+			<textarea class="form-control" rows="5" ng-model="model.description"></textarea>
+        </div>
+		<div class="row">
+			<div ng-if="model.priority" class="col-md-6">
+				<div class="form-group">
+					<label for="name">Priority</label>
+					<div class="btn-group">   
+					   <div class="btn-group">
+						  <button type="button" class="btn dropdown-toggle color-white" ng-class="getPriorityClass(model.priority)" data-toggle="dropdown">
+							{{getPriority(model.priority)}} 
+							<span class="caret"></span>
+						  </button>
+						  <ul class="dropdown-menu">
+							<li ng-if="model.priority !== 3" ng-click="model.priority=3"><a href="javascript:void(0)">High</a></li>
+							<li ng-if="model.priority !== 2" ng-click="model.priority=2"><a href="javascript:void(0)">Medium</a></li>
+							<li ng-if="model.priority !== 1" ng-click="model.priority=1"><a href="javascript:void(0)">Low</a></li>
+						  </ul>
+					   </div>
+					</div>
+				</div>
+			</div>
+			<div ng-if="model.status" class="col-md-6">
+				<div class="form-group">
+					<label for="name">Status</label>
+					<div class="btn-group">   
+					   <div class="btn-group">
+						  <button type="button" class="btn dropdown-toggle color-white" ng-class="getStatusClass(model.status)" data-toggle="dropdown">
+							{{getStatus(model.status)}} 
+							<span class="caret"></span>
+						  </button>
+						  <ul class="dropdown-menu">
+							<li ng-if="model.status !== 1" ng-click="model.status=1"><a href="javascript:void(0)">To Do</a></li>
+							<li ng-if="model.status !== 2" ng-click="model.status=2"><a href="javascript:void(0)">Working</a></li>
+							<li ng-if="model.status !== 3" ng-click="model.status=3"><a href="javascript:void(0)">Done</a></li>
+						  </ul>
+					   </div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div ng-if="errorMessage !== ''" class="has-error">{{errorMessage}}</div>
+        <div class="form-group mgt20">
+            <button ng-click="update()" class="btn btn-primary">{{model.id ? 'Update' : 'Create'}}</button> <b>or</b> 
+            <button ng-click="goToList()" class="btn btn-primary">Back to List</button>
+        </div>
+    </form>
+</div>

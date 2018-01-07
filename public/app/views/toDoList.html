@@ -1,0 +1,107 @@
+<div id="create-new-task" class="text-right">
+	<button ng-click="goToCreate()" class="btn btn-primary">+ Create New Task</button>
+</div>
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th width="20%" class="text-center">Name <span class="sort-icon" ng-class="getSortClass(sort.name)" ng-click="fnSort('name')"></span></th>
+      <th width="25%" class="text-center">Description <span class="sort-icon" ng-class="getSortClass(sort.description)" ng-click="fnSort('description')"></span></th>
+      <th width="15%" class="text-center">Priority <span class="sort-icon" ng-class="getSortClass(sort.priority)" ng-click="fnSort('priority')"></span></th>
+      <th width="15%" class="text-center">Status <span class="sort-icon" ng-class="getSortClass(sort.status)" ng-click="fnSort('status')"></span></th>
+      <th width="15%" class="text-center">Created At <span class="sort-icon" ng-class="getSortClass(sort.created_at)" ng-click="fnSort('created_at')"></span></th>
+      <th width="10%" class="text-center">Action</th>
+    </tr>
+	 <tr>
+      <th class="text-center"><input type="text" class="form-control" ng-change="fnSearch()" ng-model="search.name"></th>
+      <th class="text-center"><input type="text" class="form-control" ng-change="fnSearch()" ng-model="search.description"></th>
+      <th class="text-center">
+		<div class="btn-group width70">   
+		   <div class="btn-group btn-block">
+			  <button type="button" class="btn dropdown-toggle color-white" ng-class="getPriorityClass(search.priority)" data-toggle="dropdown">
+				{{getPriority(search.priority)}} 
+				<span class="caret"></span>
+			  </button>
+			  <ul class="dropdown-menu">
+				<li ng-if="search.priority !== 0" ng-click="fnSearch('priority', 0)"><a href="javascript:void(0)">- Select -</a></li>
+				<li ng-if="search.priority !== 3" ng-click="fnSearch('priority', 3)"><a href="javascript:void(0)">High</a></li>
+				<li ng-if="search.priority !== 2" ng-click="fnSearch('priority', 2)"><a href="javascript:void(0)">Medium</a></li>
+				<li ng-if="search.priority !== 1" ng-click="fnSearch('priority', 1)"><a href="javascript:void(0)">Low</a></li>
+			  </ul>
+		   </div>
+		</div>
+	  </th>
+	  <th class="text-center">
+		<div class="btn-group width70">   
+		   <div class="btn-group btn-block">
+			  <button type="button" class="btn btn-block dropdown-toggle color-white" ng-class="getStatusClass(search.status)" data-toggle="dropdown">
+				{{getStatus(search.status)}} 
+				<span class="caret"></span>
+			  </button>
+			  <ul class="dropdown-menu">
+				<li ng-if="search.status !== 0" ng-click="fnSearch('status', 0)"><a href="javascript:void(0)">- Select -</a></li>
+				<li ng-if="search.status !== 1" ng-click="fnSearch('status', 1)"><a href="javascript:void(0)">To Do</a></li>
+				<li ng-if="search.status !== 2" ng-click="fnSearch('status', 2)"><a href="javascript:void(0)">Working</a></li>
+				<li ng-if="search.status !== 3" ng-click="fnSearch('status', 3)"><a href="javascript:void(0)">Done</a></li>
+			  </ul>
+		   </div>
+		</div>
+	  </th>
+	  <th class="text-center"></th>
+	  <th class="text-center"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-if="list.length > 0" ng-repeat="todo in list">
+      <td>{{todo.name}}</td>
+      <td>{{todo.description}}</td>
+      <td class="text-center middle">
+		<div class="btn-group width70">   
+		   <div class="btn-group btn-block">
+			  <button type="button" class="btn btn-block dropdown-toggle color-white" ng-class="getPriorityClass(todo.priority)" data-toggle="dropdown">
+				{{getPriority(todo.priority)}} 
+				<span class="caret"></span>
+			  </button>
+			  <ul class="dropdown-menu">
+				<li ng-if="todo.priority !== 3" ng-click="setPriority(todo, 3)"><a href="javascript:void(0)">High</a></li>
+				<li ng-if="todo.priority !== 2" ng-click="setPriority(todo, 2)"><a href="javascript:void(0)">Medium</a></li>
+				<li ng-if="todo.priority !== 1" ng-click="setPriority(todo, 1)"><a href="javascript:void(0)">Low</a></li>
+			  </ul>
+		   </div>
+		</div>
+	  </td>
+	  <td class="text-center middle">
+		<div class="btn-group width70">   
+		   <div class="btn-group btn-block">
+			  <button type="button" class="btn btn-block dropdown-toggle color-white" ng-class="getStatusClass(todo.status)" data-toggle="dropdown">
+				{{getStatus(todo.status)}} 
+				<span class="caret"></span>
+			  </button>
+			  <ul class="dropdown-menu">
+				<li ng-if="todo.status !== 1" ng-click="setStatus(todo, 1)"><a href="javascript:void(0)">To Do</a></li>
+				<li ng-if="todo.status !== 2" ng-click="setStatus(todo, 2)"><a href="javascript:void(0)">Working</a></li>
+				<li ng-if="todo.status !== 3" ng-click="setStatus(todo, 3)"><a href="javascript:void(0)">Done</a></li>
+			  </ul>
+		   </div>
+		</div>
+	  </td>
+	  <td>{{todo.created_at}}</td>
+      <td class="text-center middle">
+		<div class="btn-group">   
+		   <div class="btn-group">
+			  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+				  ...
+				<span class="caret"></span>
+			  </button>
+			  <ul class="dropdown-menu">
+				<li><a href="javascript:void(0)" ng-click="goToEdit(todo.id)">Edit</a></li>
+				<li><a href="javascript:void(0)" ng-click="delete(todo)" href="#">Delete</a></li>
+			  </ul>
+		   </div>
+		</div>
+	  </td>
+    </tr>
+	<tr ng-if="list.length === 0">
+      <td colspan="6">No task here</td>
+	</tr>
+  </tbody>
+</table>

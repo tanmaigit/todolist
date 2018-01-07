@@ -1,0 +1,11 @@
+{
+  "name": "todo-list",
+  "directory": "public/bower_components",
+  "dependencies": {
+    "jquery": "2.0.0",
+    "angular": "1.5.8",
+    "ngstorage": "0.3.10",
+    "bootstrap": "3.3.4",
+    "ui-router": "0.4.2"
+  }
+}

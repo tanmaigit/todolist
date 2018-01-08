@@ -86,10 +86,10 @@ class ToDoController extends Controller{
 	}
 
 	public function delete($id){
-    	$car  = ToDo::find($id);
-    	$car->delete();
+    	$todo = ToDo::find($id);
+    	$todo->delete();
  
-    	return response()->json('Removed successfully.');
+    	return response()->json('Deleted successfully.');
 	}
 }
 ?>
